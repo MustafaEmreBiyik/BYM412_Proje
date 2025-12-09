@@ -1,0 +1,37 @@
+# ROS 2 Build Artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+*.egg
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Gazebo
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# Maps (optional - remove if you want to commit maps)
+# *.pgm
+# *.yaml

@@ -14,6 +14,7 @@ find_package(xacro REQUIRED)
 install(DIRECTORY
   launch
   urdf
+  worlds
   DESTINATION share/${PROJECT_NAME}/
 )
 

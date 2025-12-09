@@ -1,0 +1,93 @@
+=====================================
+2+1 APARTMENT LAYOUT DIAGRAM
+=====================================
+
+Overall Dimensions: 10m x 10m
+Wall Height: 2.5m
+Wall Thickness: 0.15m
+Doorway Width: 0.9m
+
+ASCII Layout (Top View):
+=====================================
+
+    North (Y = +5)
+    ↑
+    |
+    +------------------------------------------+
+    |                  |        BEDROOM 1      |
+    |                  |      (3m x 2.5m)      |
+    |                  |       [BLUE]          |
+    |                  +-----[ ]-----+         |
+    |                  |  Doorway    |         |
+    |    LIVING ROOM   |             |         |
+    |     (5m x 10m)   |  HALLWAY    +---------+
+    |      [GREEN]     +--[ ]-+      |         |
+    |                  Doorway |     BEDROOM 2 |
+    |                  |       |   (3m x 2.5m) |
+    |                  |       |     [RED]     |
+    |                  |       +-----[ ]-------+
+    |                  |           Doorway     |
+    +------------------------------------------+
+                                               
+    West              East
+    (X=-5)           (X=+5)
+
+    South (Y = -5)
+
+
+ROOM COORDINATES (Center Points):
+=====================================
+- Living Room:  X = -2.0,  Y = 0.0    (Green Marker)
+- Hallway:      X = 2.5,   Y = 0.0    (Yellow Marker)
+- Bedroom 1:    X = 3.0,   Y = 3.25   (Blue Marker)
+- Bedroom 2:    X = 3.0,   Y = -3.25  (Red Marker)
+
+
+DOORWAY LOCATIONS:
+=====================================
+1. Living Room → Hallway:
+   - Location: X = 1.0, Y = 0.0
+   - Width: 0.9m
+   - Direction: East-West passage
+
+2. Hallway → Bedroom 1:
+   - Location: X = 2.625, Y = 2.5
+   - Width: 0.9m
+   - Direction: North entrance
+
+3. Hallway → Bedroom 2:
+   - Location: X = 2.625, Y = -2.5
+   - Width: 0.9m
+   - Direction: South entrance
+
+4. Bedroom 1 ↔ Bedroom 2 (via Hallway):
+   - Location: X = 3.075, Y = 0.0
+   - Width: 0.9m
+   - Direction: North-South passage
+
+
+ROBOT SPAWN RECOMMENDATION:
+=====================================
+Spawn the robot in the Living Room for easy navigation:
+- Recommended Spawn: X = -2.0, Y = 0.0, Z = 0.1
+
+
+NAVIGATION CONSIDERATIONS:
+=====================================
+- All doorways are 0.9m wide (standard door size)
+- Robot width should be < 0.7m for safe passage
+- Clear floor space in all rooms for coverage planning
+- Wall collisions enabled for realistic SLAM mapping
+- Ground plane is 20m x 20m (plenty of space)
+
+
+TESTING CHECKLIST:
+=====================================
+☐ Robot spawns correctly in Living Room
+☐ Robot can navigate through all doorways
+☐ LIDAR detects all walls properly
+☐ SLAM can map the entire apartment
+☐ Coverage planner can access all rooms
+☐ No wall penetration or collision issues
+
+=====================================

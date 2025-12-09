@@ -15,22 +15,25 @@ def generate_launch_description():
     doc = xacro.process_file(urdf_file)
     robot_desc = {'robot_description': doc.toxml()}
 
-    # 2. Gazebo Harmonic'i Başlat (Boş bir dünya ile)
+    # 2. Gazebo Harmonic'i Başlat (Custom 2+1 Apartment World)
     # '-r' simülasyonu çalışır durumda başlatır
+    world_file = os.path.join(pkg_share, 'worlds', 'my_home.sdf')
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items(),
+        launch_arguments={'gz_args': ['-r ', world_file]}.items(),
     )
 
-    # 3. Robotu Sahneye Yerleştir (Spawn)
+    # 3. Robotu Sahneye Yerleştir (Spawn) - Living Room'da başlat
     create_entity = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=['-topic', 'robot_description',
                    '-name', 'home_cleaner_bot',
-                   '-z', '0.1'], # Yere gomulmemesi icin hafif yukarida
+                   '-x', '-2.0',
+                   '-y', '0.0',
+                   '-z', '0.1'], # Living Room center'da spawn
         output='screen'
     )
 
