@@ -1,9 +1,18 @@
-# ROS 2 Build Artifacts
+# ============================================
+# ROS 2 WORKSPACE - Build Artifacts
+# ============================================
 build/
 install/
 log/
+*.log
 
-# Python
+# Colcon specific
+.colcon/
+COLCON_IGNORE
+
+# ============================================
+# PYTHON
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -12,26 +21,147 @@ __pycache__/
 *.egg-info/
 dist/
 *.egg
+.pytest_cache/
+*.pyc
+*.pyo
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+ENV/
+env/
 
-# IDEs
+# ============================================
+# C++ / CMAKE
+# ============================================
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+*.out
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+compile_commands.json
+
+# ============================================
+# IDEs & EDITORS
+# ============================================
+# VS Code
 .vscode/
+*.code-workspace
+
+# JetBrains (CLion, PyCharm)
 .idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim
 *.swp
 *.swo
 *~
+.*.sw?
 
-# OS
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# OPERATING SYSTEM
+# ============================================
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
+._*
 
-# Gazebo
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# ============================================
+# GAZEBO / SIMULATION
+# ============================================
+# Gazebo logs
+gzserver.log
+gzclient.log
 *.log
 
-# Temporary files
+# Gazebo cache
+.gazebo/
+~/.gazebo/
+
+# ============================================
+# ROS 2 SPECIFIC
+# ============================================
+# Bag files (rosbag recordings)
+*.db3
+*.db3-*
+*.bag
+rosbag2_*/
+
+# URDF/Xacro generated files
+*.urdf.generated
+
+# Parameter files (if auto-generated)
+# *.yaml
+
+# ============================================
+# NAVIGATION & SLAM
+# ============================================
+# Saved maps (uncomment if you don't want to commit maps)
+# src/home_cleaner_bot_description/maps/*.pgm
+# src/home_cleaner_bot_description/maps/*.yaml
+
+# SLAM serialization files
+*.posegraph
+*.data
+
+# ============================================
+# DOCKER
+# ============================================
+# Docker volumes
+.docker/
+docker-compose.override.yml
+
+# ============================================
+# TEMPORARY & BACKUP FILES
+# ============================================
 *.tmp
 *.bak
 *.backup
+*.orig
+*.rej
+*.patch
 
-# Maps (optional - remove if you want to commit maps)
-# *.pgm
-# *.yaml
+# ============================================
+# DOCUMENTATION BUILD
+# ============================================
+docs/_build/
+docs/.doctrees/
+site/
+
+# ============================================
+# TESTING
+# ============================================
+test_results/
+*.test
+*.gtest

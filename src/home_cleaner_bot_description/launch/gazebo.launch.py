@@ -33,7 +33,8 @@ def generate_launch_description():
                    '-name', 'home_cleaner_bot',
                    '-x', '-2.0',
                    '-y', '0.0',
-                   '-z', '0.1'], # Living Room center'da spawn
+                   '-z', '0.1',
+                   '-Y', '0.0'], # Living Room center'da spawn, +X yönüne (kapıya) bak
         output='screen'
     )
 
@@ -52,6 +53,11 @@ def generate_launch_description():
         arguments=[
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
+            # Odom is required for SLAM + Nav2
+            '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            # If Gazebo publishes TF on transport, this will bridge it.
+            # If not, it may warn at runtime; TF from robot_state_publisher still works.
+            '/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
             '/model/home_cleaner_bot/joint_state@sensor_msgs/msg/JointState@gz.msgs.Model', # <-- YENİ EKLENEN SATIR
         ],
         remappings=[

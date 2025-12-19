@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <sdf version="1.9">
   <world name="my_home">
-    
+
     <!-- Physics -->
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
-    
+
     <!-- Plugins -->
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
@@ -39,7 +39,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>20 20</size>
+              <size>30 30</size>
             </plane>
           </geometry>
         </collision>
@@ -47,448 +47,289 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>20 20</size>
+              <size>30 30</size>
             </plane>
           </geometry>
           <material>
-            <ambient>0.8 0.8 0.8 1</ambient>
-            <diffuse>0.8 0.8 0.8 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
+            <ambient>0.85 0.85 0.85 1</ambient>
+            <diffuse>0.85 0.85 0.85 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
           </material>
         </visual>
       </link>
     </model>
 
-    <!-- ========================================= -->
-    <!-- APARTMENT LAYOUT (2+1 Configuration)      -->
-    <!-- ========================================= -->
-    <!-- Dimensions Overview:
-         - Living Room: 5m x 4m (center-left)
-         - Bedroom 1: 3m x 3m (top-right)
-         - Bedroom 2: 3m x 3m (bottom-right)
-         - Hallway: 1.5m wide corridor connecting rooms
-         - Wall thickness: 0.15m
-         - Wall height: 2.5m
-         - Doorway width: 0.9m
-    -->
+        <!-- ========================================================= -->
+        <!-- APARTMENT LAYOUT (Salon + 2 Bedroom + Kitchen + WC + Hall) -->
+        <!-- ========================================================= -->
+        <!-- Rooms:
+          - Salon (Living Room):   left-middle/top
+          - Mutfak (Kitchen):      left-bottom
+          - Tuvalet (WC):          small room near corridor (left-top)
+          - Koridor (Hallway):     central vertical corridor
+          - Yatak Odası 1:         right-top
+          - Yatak Odası 2:         right-bottom
 
-    <!-- ========================================= -->
-    <!-- OUTER WALLS (Perimeter)                   -->
-    <!-- ========================================= -->
-    
-    <!-- North Wall (Top) -->
-    <model name="north_wall">
+          Coordinate system:
+          - Apartment perimeter: x in [-7, 7], y in [-5, 5]
+          - Hallway corridor:     x in [-1, 1]
+
+          Walls:
+          - Height: 2.5m
+          - Thickness: 0.15m
+          - Color: Grey/White
+
+          Doorways: 1.2m gaps in the corridor walls so both human + robot pass.
+          Spawn:
+          - Robot spawn is set in the launch file at x=-2.0 y=0.0, yaw=0 (faces +X, toward the corridor).
+        -->
+
+    <!-- ====================== -->
+    <!-- OUTER PERIMETER WALLS  -->
+    <!-- ====================== -->
+
+    <!-- North Wall (y = +5) -->
+    <model name="wall_north">
       <static>true</static>
       <pose>0 5 1.25 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>10 0.15 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>14 0.15 2.5</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>10 0.15 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>14 0.15 2.5</size></box></geometry>
           <material>
-            <ambient>0.7 0.7 0.7 1</ambient>
-            <diffuse>0.7 0.7 0.7 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
           </material>
         </visual>
       </link>
     </model>
 
-    <!-- South Wall (Bottom) -->
-    <model name="south_wall">
+    <!-- South Wall (y = -5) -->
+    <model name="wall_south">
       <static>true</static>
       <pose>0 -5 1.25 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>10 0.15 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>14 0.15 2.5</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>10 0.15 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.7 0.7 0.7 1</ambient>
-            <diffuse>0.7 0.7 0.7 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- West Wall (Left) -->
-    <model name="west_wall">
-      <static>true</static>
-      <pose>-5 0 1.25 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.15 10 2.5</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.15 10 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.7 0.7 0.7 1</ambient>
-            <diffuse>0.7 0.7 0.7 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- East Wall (Right) -->
-    <model name="east_wall">
-      <static>true</static>
-      <pose>5 0 1.25 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.15 10 2.5</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.15 10 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.7 0.7 0.7 1</ambient>
-            <diffuse>0.7 0.7 0.7 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- ========================================= -->
-    <!-- INNER WALLS (Room Dividers)               -->
-    <!-- ========================================= -->
-
-    <!-- Hallway Vertical Wall (Separates Living Room from Bedrooms) -->
-    <!-- This wall runs north-south with a doorway in the middle -->
-    
-    <!-- Hallway Wall - Upper Segment (with gap for doorway) -->
-    <model name="hallway_wall_upper">
-      <static>true</static>
-      <pose>1 2.525 1.25 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.15 4.8 2.5</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.15 4.8 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>14 0.15 2.5</size></box></geometry>
           <material>
             <ambient>0.9 0.9 0.9 1</ambient>
             <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
+            <specular>0.05 0.05 0.05 1</specular>
           </material>
         </visual>
       </link>
     </model>
 
-    <!-- Hallway Wall - Lower Segment (with gap for doorway) -->
-    <model name="hallway_wall_lower">
+    <!-- West Wall (x = -7) -->
+    <model name="wall_west">
       <static>true</static>
-      <pose>1 -2.525 1.25 0 0 0</pose>
+      <pose>-7 0 1.25 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.15 4.8 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>0.15 10 2.5</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.15 4.8 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>0.15 10 2.5</size></box></geometry>
           <material>
             <ambient>0.9 0.9 0.9 1</ambient>
             <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
+            <specular>0.05 0.05 0.05 1</specular>
           </material>
         </visual>
       </link>
     </model>
-    <!-- Doorway gap between upper and lower segments at y=0, width=0.9m -->
 
-    <!-- Bedroom Separator Wall (Divides two bedrooms horizontally) -->
-    <!-- This wall runs east-west between the two bedrooms -->
-    
-    <!-- Bedroom Separator - Left Segment -->
-    <model name="bedroom_separator_left">
+    <!-- East Wall (x = +7) -->
+    <model name="wall_east">
       <static>true</static>
-      <pose>2.075 0 1.25 0 0 0</pose>
+      <pose>7 0 1.25 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>2 0.15 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>0.15 10 2.5</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>2 0.15 2.5</size>
-            </box>
-          </geometry>
+          <geometry><box><size>0.15 10 2.5</size></box></geometry>
           <material>
             <ambient>0.9 0.9 0.9 1</ambient>
             <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
+            <specular>0.05 0.05 0.05 1</specular>
           </material>
         </visual>
       </link>
     </model>
 
-    <!-- Bedroom Separator - Right Segment -->
-    <model name="bedroom_separator_right">
-      <static>true</static>
-      <pose>4.075 0 1.25 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>2 0.15 2.5</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>2 0.15 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.9 0.9 0.9 1</ambient>
-            <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-    <!-- Doorway gap for hallway access at x=3.075, width=0.9m -->
+    <!-- ====================== -->
+    <!-- INNER WALLS (DIVIDERS) -->
+    <!-- ====================== -->
 
-    <!-- Bedroom 1 Door Frame Wall (Top segment) -->
-    <model name="bedroom1_door_wall_left">
+    <!-- Corridor boundaries are the two long walls at x=-1 and x=+1.
+         We split them into segments to create door gaps (1.2m). -->
+
+    <!-- LEFT corridor wall at x=-1, with 3 doors:
+         - Kitchen door at y=-3.0
+         - Living room door at y=0.0
+         - WC door at y=2.75 -->
+
+    <!-- Segment 1: y in [-5, -3.6] (len 1.4) -->
+    <model name="corridor_left_seg1">
       <static>true</static>
-      <pose>1.625 2.5 1.25 0 0 0</pose>
+      <pose>-1 -4.3 1.25 0 0 0</pose>
       <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>1.1 0.15 2.5</size>
-            </box>
-          </geometry>
-        </collision>
+        <collision name="collision"><geometry><box><size>0.15 1.4 2.5</size></box></geometry></collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>1.1 0.15 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.9 0.9 0.9 1</ambient>
-            <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
+          <geometry><box><size>0.15 1.4 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
         </visual>
       </link>
     </model>
 
-    <model name="bedroom1_door_wall_right">
+    <!-- Segment 2: y in [-2.4, -0.6] (len 1.8) -->
+    <model name="corridor_left_seg2">
       <static>true</static>
-      <pose>3.625 2.5 1.25 0 0 0</pose>
+      <pose>-1 -1.5 1.25 0 0 0</pose>
       <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>2.6 0.15 2.5</size>
-            </box>
-          </geometry>
-        </collision>
+        <collision name="collision"><geometry><box><size>0.15 1.8 2.5</size></box></geometry></collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>2.6 0.15 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.9 0.9 0.9 1</ambient>
-            <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-    <!-- Doorway for Bedroom 1 at x=2.625, width=0.9m -->
-
-    <!-- Bedroom 2 Door Frame Wall (Bottom segment) -->
-    <model name="bedroom2_door_wall_left">
-      <static>true</static>
-      <pose>1.625 -2.5 1.25 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>1.1 0.15 2.5</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>1.1 0.15 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.9 0.9 0.9 1</ambient>
-            <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
+          <geometry><box><size>0.15 1.8 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
         </visual>
       </link>
     </model>
 
-    <model name="bedroom2_door_wall_right">
+    <!-- Segment 3: y in [0.6, 2.15] (len 1.55) -->
+    <model name="corridor_left_seg3">
       <static>true</static>
-      <pose>3.625 -2.5 1.25 0 0 0</pose>
+      <pose>-1 1.375 1.25 0 0 0</pose>
       <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>2.6 0.15 2.5</size>
-            </box>
-          </geometry>
-        </collision>
+        <collision name="collision"><geometry><box><size>0.15 1.55 2.5</size></box></geometry></collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>2.6 0.15 2.5</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.9 0.9 0.9 1</ambient>
-            <diffuse>0.9 0.9 0.9 1</diffuse>
-            <specular>0.1 0.1 0.1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-    <!-- Doorway for Bedroom 2 at x=2.625, width=0.9m -->
-
-    <!-- ========================================= -->
-    <!-- ROOM LABELS (Optional visual markers)     -->
-    <!-- ========================================= -->
-    <!-- You can add text labels in Gazebo GUI or use simple colored boxes as markers -->
-    
-    <!-- Living Room Center Marker (Small box at floor level) -->
-    <model name="living_room_marker">
-      <static>true</static>
-      <pose>-2 0 0.01 0 0 0</pose>
-      <link name="link">
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.5 0.5 0.02</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.2 0.8 0.2 1</ambient>
-            <diffuse>0.2 0.8 0.2 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 1.55 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
         </visual>
       </link>
     </model>
 
-    <!-- Bedroom 1 Center Marker -->
-    <model name="bedroom1_marker">
+    <!-- Segment 4: y in [3.35, 5] (len 1.65) -->
+    <model name="corridor_left_seg4">
       <static>true</static>
-      <pose>3 3.25 0.01 0 0 0</pose>
+      <pose>-1 4.175 1.25 0 0 0</pose>
       <link name="link">
+        <collision name="collision"><geometry><box><size>0.15 1.65 2.5</size></box></geometry></collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.5 0.5 0.02</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.2 0.2 0.8 1</ambient>
-            <diffuse>0.2 0.2 0.8 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 1.65 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
         </visual>
       </link>
     </model>
 
-    <!-- Bedroom 2 Center Marker -->
-    <model name="bedroom2_marker">
+    <!-- RIGHT corridor wall at x=+1, with 2 bedroom doors:
+         - Bedroom 2 door at y=-2.5
+         - Bedroom 1 door at y=+2.5 -->
+
+    <!-- Segment A: y in [-5, -3.1] (len 1.9) -->
+    <model name="corridor_right_segA">
       <static>true</static>
-      <pose>3 -3.25 0.01 0 0 0</pose>
+      <pose>1 -4.05 1.25 0 0 0</pose>
       <link name="link">
+        <collision name="collision"><geometry><box><size>0.15 1.9 2.5</size></box></geometry></collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.5 0.5 0.02</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.8 0.2 0.2 1</ambient>
-            <diffuse>0.8 0.2 0.2 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 1.9 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
         </visual>
       </link>
     </model>
 
-    <!-- Hallway Center Marker -->
-    <model name="hallway_marker">
+    <!-- Segment B: y in [-1.9, 1.9] (len 3.8) -->
+    <model name="corridor_right_segB">
       <static>true</static>
-      <pose>2.5 0 0.01 0 0 0</pose>
+      <pose>1 0 1.25 0 0 0</pose>
       <link name="link">
+        <collision name="collision"><geometry><box><size>0.15 3.8 2.5</size></box></geometry></collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.3 0.3 0.02</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.8 0.8 0.2 1</ambient>
-            <diffuse>0.8 0.8 0.2 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 3.8 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Segment C: y in [3.1, 5] (len 1.9) -->
+    <model name="corridor_right_segC">
+      <static>true</static>
+      <pose>1 4.05 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.15 1.9 2.5</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>0.15 1.9 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Kitchen separator wall (between Salon and Kitchen), full wall at y=-1.5 for x in [-7, -1] -->
+    <model name="divider_salon_kitchen">
+      <static>true</static>
+      <pose>-4 -1.5 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>6 0.15 2.5</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>6 0.15 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- WC (Toilet) enclosure: x in [-3, -1], y in [2.0, 3.5] -->
+    <model name="wc_left_wall">
+      <static>true</static>
+      <pose>-3 2.75 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.15 1.5 2.5</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>0.15 1.5 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wc_bottom_wall">
+      <static>true</static>
+      <pose>-2 2.0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>2 0.15 2.5</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>2 0.15 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wc_top_wall">
+      <static>true</static>
+      <pose>-2 3.5 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>2 0.15 2.5</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>2 0.15 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Bedroom separator (between Bedroom 1 top and Bedroom 2 bottom), full wall at y=0 for x in [1, 7] -->
+    <model name="divider_bedroom1_bedroom2">
+      <static>true</static>
+      <pose>4 0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>6 0.15 2.5</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>6 0.15 2.5</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse><specular>0.05 0.05 0.05 1</specular></material>
         </visual>
       </link>
     </model>
